@@ -102,3 +102,34 @@ export interface OrderResponse {
 		order: Order;
 	};
 }
+
+export interface CreateArticleRequest {
+	nombre: string;
+	descripcion: string;
+	stock: number;
+	precio: number;
+}
+
+export interface CreateArticleResponse {
+	success: boolean;
+	message: string;
+	data: {
+		article: Article;
+	};
+}
+
+export interface DeleteArticleResponse {
+	success: boolean;
+	message: string;
+	data: {
+		deletedOrders: number;
+	};
+}
+
+export interface OrdersListResponse {
+	success: boolean;
+	message: string;
+	data: {
+		orders: Order[];
+	};
+}

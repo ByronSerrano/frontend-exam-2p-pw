@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { authStore } from '$lib/stores/auth.svelte';
+	import { cartStore } from '$lib/stores/cart.svelte';
 	import { getAllArticles } from '$lib/api/articles';
 	import Header from '$lib/components/Header.svelte';
 	import ArticleCard from '$lib/components/ArticleCard.svelte';
@@ -31,10 +32,8 @@
 		}
 	});
 
-	function handleAddToCart(articleId: number) {
-		// Por ahora solo mostrar en consola, implementar carrito después
-		console.log('Añadir al carrito:', articleId);
-		// TODO: Implementar lógica del carrito
+	function handleAddToCart(article: Article) {
+		cartStore.addItem(article, 1);
 	}
 </script>
 

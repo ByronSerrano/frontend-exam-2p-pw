@@ -1,15 +1,17 @@
 <script lang="ts">
 	import type { Article, UserType } from '$lib/types';
+	import { cartStore } from '$lib/stores/cart.svelte';
 
 	interface Props {
 		article: Article;
 		userType?: UserType;
-		onAddToCart?: (articleId: number) => void;
+		onAddToCart?: (article: Article) => void;
 	}
 
 	let { article, userType, onAddToCart }: Props = $props();
 
 	let isOutOfStock = $derived(article.stock === 0);
+	let isInCart = $derived(cartStore.isInCart(article.id));
 	let stockClass = $derived(
 		article.stock === 0
 			? 'bg-red-900/50 text-red-300'
@@ -23,7 +25,7 @@
 
 	function handleAddToCart() {
 		if (onAddToCart && !isOutOfStock) {
-			onAddToCart(article.id);
+			onAddToCart(article);
 		}
 	}
 </script>
@@ -71,10 +73,23 @@
 			<button
 				onclick={handleAddToCart}
 				disabled={isOutOfStock}
-				class="w-full py-2.5 px-4 bg-orange-700 text-white rounded-lg hover:bg-orange-600 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed transition-colors font-medium"
+				class="w-full py-2.5 px-4 rounded-lg transition-colors font-medium flex items-center justify-center gap-2 {isInCart
+					? 'bg-green-700 hover:bg-green-600 text-white'
+					: 'bg-orange-700 hover:bg-orange-600 text-white disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed'}"
 			>
 				{#if isOutOfStock}
 					Agotado
+				{:else if isInCart}
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-5 w-5"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+					</svg>
+					Añadido
 				{:else}
 					Añadir al carrito
 				{/if}

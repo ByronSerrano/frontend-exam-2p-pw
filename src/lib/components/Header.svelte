@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { authStore } from '$lib/stores/auth.svelte';
+	import { cartStore } from '$lib/stores/cart.svelte';
 	import { goto } from '$app/navigation';
 
 	function handleLogout() {
@@ -17,6 +18,7 @@
 
 	let userType = $derived(authStore.user?.tipo);
 	let userName = $derived(authStore.user?.nombre);
+	let cartItemsCount = $derived(cartStore.getTotalItems());
 </script>
 
 <header class="bg-gray-800 border-b border-gray-700">
@@ -41,7 +43,7 @@
 					<!-- Botón Carrito para clientes -->
 					<button
 						onclick={handleCart}
-						class="flex items-center gap-2 px-4 py-2 bg-gray-700 text-gray-100 rounded-lg hover:bg-gray-600 transition-colors"
+						class="relative flex items-center gap-2 px-4 py-2 bg-gray-700 text-gray-100 rounded-lg hover:bg-gray-600 transition-colors"
 						title="Ver carrito"
 					>
 						<svg
@@ -59,6 +61,13 @@
 							/>
 						</svg>
 						<span class="hidden sm:inline">Carrito</span>
+						{#if cartItemsCount > 0}
+							<span
+								class="absolute -top-1 -right-1 bg-orange-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+							>
+								{cartItemsCount}
+							</span>
+						{/if}
 					</button>
 				{:else if userType === 'vendedor'}
 					<!-- Botón Administrar para vendedores -->
