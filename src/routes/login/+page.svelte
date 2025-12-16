@@ -30,12 +30,8 @@
 			const response = await login({ email, password });
 			authStore.setAuth(response.data.user, response.data.token);
 			
-			// Redirigir según el tipo de usuario
-			if (response.data.user.tipo === 'cliente') {
-				goto('/tienda');
-			} else {
-				goto('/dashboard');
-			}
+			// Redirigir al dashboard
+			goto('/dashboard');
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Error al iniciar sesión';
 		} finally {

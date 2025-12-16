@@ -63,3 +63,42 @@ export interface ArticlesResponse {
 		articles: Article[];
 	};
 }
+
+export interface CartItem {
+	article: Article;
+	cantidad: number;
+}
+
+export interface CreateOrderRequest {
+	articleId: number;
+	cantidad: number;
+	nombre: string;
+	direccion: string;
+	telefono: string;
+}
+
+export type OrderStatus = 'pendiente' | 'completado' | 'cancelado';
+
+export interface Order {
+	id: number;
+	clienteId: number;
+	articleId: number;
+	cantidad: number;
+	nombre: string;
+	direccion: string;
+	telefono: string;
+	total: number;
+	estado: OrderStatus;
+	createdAt: string;
+	updatedAt: string;
+	articulo?: Article;
+	cliente?: User;
+}
+
+export interface OrderResponse {
+	success: boolean;
+	message: string;
+	data: {
+		order: Order;
+	};
+}
